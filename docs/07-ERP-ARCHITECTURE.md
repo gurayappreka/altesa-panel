@@ -15,14 +15,34 @@ SAP seviyesine yakın, modüler, ölçeklenebilir bir ERP+CRM sistemi.
 │  └─────────────────────────────────────────────────────────────────────┘   │
 │                                                                             │
 │  ┌─────────┐ ┌─────────┐ ┌─────────┐ ┌─────────┐ ┌─────────┐ ┌─────────┐  │
-│  │   CRM   │ │ PROJECT │ │PRODUCTN │ │   SCM   │ │   WMS   │ │   DMS   │  │
+│  │   CRM   │ │ PROJECT │ │PRODUCTN │ │   SCM   │ │   WMS   │ │   HRM   │  │
 │  │         │ │  MGMT   │ │  (MES)  │ │         │ │         │ │         │  │
-│  │•Accounts│ │•Projects│ │•BOM     │ │•Purchase│ │•Stock   │ │•Files   │  │
-│  │•Contacts│ │•Tasks   │ │•WorkOrd │ │•Supplier│ │•Warehou │ │•Folders │  │
-│  │•Leads   │ │•Gantt   │ │•Routing │ │•RFQ     │ │•Invntry │ │•Version │  │
-│  │•Opports │ │•Resource│ │•Quality │ │•Contract│ │•MoveMnt │ │•Sharing │  │
-│  │•Quotes  │ │•Timeshee│ │•Maint.  │ │•Receive │ │•Serial  │ │•Workflow│  │
+│  │•Accounts│ │•Projects│ │•BOM     │ │•Purchase│ │•Stock   │ │•Personel│  │
+│  │•Contacts│ │•Tasks   │ │•WorkOrd │ │•Supplier│ │•Warehou │ │•Payroll │  │
+│  │•Leads   │ │•Gantt   │ │•Routing │ │•RFQ     │ │•Invntry │ │•Leave   │  │
+│  │•Opports │ │•Resource│ │•Quality │ │•Contract│ │•MoveMnt │ │•Recruit │  │
+│  │•Quotes  │ │•Timeshee│ │•Maint.  │ │•Receive │ │•Serial  │ │•Training│  │
 │  └─────────┘ └─────────┘ └─────────┘ └─────────┘ └─────────┘ └─────────┘  │
+│                                                                             │
+│  ┌─────────┐ ┌─────────┐ ┌─────────┐ ┌─────────┐ ┌─────────┐ ┌─────────┐  │
+│  │   FMS   │ │   BI    │ │   PLM   │ │   TMS   │ │   DMS   │ │   GRC   │  │
+│  │(Finance)│ │(Analitk)│ │ (Ürün)  │ │(Lojistk)│ │         │ │         │  │
+│  │•GL/Muhsb│ │•Dashbrd │ │•Lifecycle│ │•Shipment│ │•Files   │ │•Risk    │  │
+│  │•AP/AR   │ │•Reports │ │•Revision│ │•Routing │ │•Folders │ │•Complnce│  │
+│  │•Budget  │ │•KPIs    │ │•ECR/ECO │ │•Carrier │ │•Version │ │•Audit   │  │
+│  │•CostAcct│ │•Forecast│ │•CAD Int.│ │•Track   │ │•Sharing │ │•Policy  │  │
+│  │•BankRec │ │•Drill-dn│ │•Where-us│ │•Cost    │ │•Workflow│ │•Incident│  │
+│  └─────────┘ └─────────┘ └─────────┘ └─────────┘ └─────────┘ └─────────┘  │
+│                                                                             │
+│  ┌─────────┐ ┌─────────┐ ┌─────────┐                                       │
+│  │   FSM   │ │ SERVICE │ │   MDM   │                                       │
+│  │ (Saha)  │ │(Destek) │ │(Master) │                                       │
+│  │•Install │ │•Tickets │ │•Products│                                       │
+│  │•Commissn│ │•Warranty│ │•Customer│                                       │
+│  │•Site Vis│ │•SparePrt│ │•Supplier│                                       │
+│  │•Crew Pln│ │•Contract│ │•Coding  │                                       │
+│  │•Travel  │ │•SLA     │ │•Integrat│                                       │
+│  └─────────┘ └─────────┘ └─────────┘                                       │
 │                                                                             │
 │  ┌─────────────────────────────────────────────────────────────────────┐   │
 │  │                        WORKFLOW ENGINE                               │   │
@@ -32,6 +52,7 @@ SAP seviyesine yakın, modüler, ölçeklenebilir bir ERP+CRM sistemi.
 │  ┌─────────────────────────────────────────────────────────────────────┐   │
 │  │                        CORE SERVICES                                 │   │
 │  │  Auth │ RBAC │ Audit │ Notifications │ Search │ Reports │ API       │   │
+│  │  Multi-lang │ Multi-currency │ Integration Hub │ Scheduler │ Queue  │   │
 │  └─────────────────────────────────────────────────────────────────────┘   │
 │                                                                             │
 │  ┌─────────────────────────────────────────────────────────────────────┐   │
@@ -308,7 +329,403 @@ DMS
     └── Dağıtım kontrollü
 ```
 
-### 7. WORKFLOW ENGINE
+### 7. HRM (Human Resource Management)
+```
+HRM
+├── Personel Yönetimi
+│   ├── Çalışan kartları
+│   ├── Organizasyon şeması
+│   ├── Pozisyon/ünvan yönetimi
+│   ├── İş sözleşmeleri
+│   └── Özlük dosyası
+│
+├── Bordro (Payroll)
+│   ├── Maaş hesaplama
+│   ├── SGK/vergi kesintileri
+│   ├── Ek ödemeler (prim, ikramiye)
+│   ├── Bordro raporları
+│   └── Banka entegrasyonu
+│
+├── İzin Yönetimi (Leave)
+│   ├── İzin tipleri (yıllık, hastalık, vb.)
+│   ├── İzin talep/onay
+│   ├── İzin bakiye takibi
+│   └── Tatil takvimi
+│
+├── İşe Alım (Recruitment)
+│   ├── Açık pozisyonlar
+│   ├── Başvuru takibi
+│   ├── Mülakat planlama
+│   ├── Aday değerlendirme
+│   └── Onboarding süreci
+│
+├── Eğitim (Training)
+│   ├── Eğitim planları
+│   ├── Eğitim talepleri
+│   ├── Sertifika takibi
+│   └── Yetkinlik matrisi
+│
+├── Performans
+│   ├── Hedef belirleme
+│   ├── Performans değerlendirme
+│   ├── 360° geri bildirim
+│   └── Kariyer planlama
+│
+└── Puantaj
+    ├── Giriş/çıkış kaydı
+    ├── Fazla mesai takibi
+    ├── Vardiya planlama
+    └── PDKS entegrasyonu
+```
+
+### 8. FMS (Financial Management System)
+```
+FMS
+├── Genel Muhasebe (GL)
+│   ├── Hesap planı
+│   ├── Muhasebe fişleri
+│   ├── Mizan
+│   ├── Bilanço
+│   └── Gelir tablosu
+│
+├── Alacak Yönetimi (AR)
+│   ├── Müşteri cari hesap
+│   ├── Fatura kesimi
+│   ├── Tahsilat takibi
+│   ├── Vade analizi
+│   └── Kredi limiti yönetimi
+│
+├── Borç Yönetimi (AP)
+│   ├── Tedarikçi cari hesap
+│   ├── Gelen fatura kaydı
+│   ├── Ödeme planlaması
+│   ├── Çek/senet yönetimi
+│   └── 3-way matching
+│
+├── Bütçe Yönetimi
+│   ├── Bütçe hazırlama
+│   ├── Departman bütçeleri
+│   ├── Bütçe karşılaştırma
+│   └── Revizyon takibi
+│
+├── Maliyet Muhasebesi
+│   ├── Maliyet merkezleri
+│   ├── Aktivite bazlı maliyetleme
+│   ├── Ürün maliyeti hesaplama
+│   └── Sapma analizi
+│
+├── Banka İşlemleri
+│   ├── Banka hesapları
+│   ├── Banka mutabakatı
+│   ├── Nakit akış takibi
+│   └── Döviz yönetimi
+│
+└── Vergi Yönetimi
+    ├── KDV beyanname
+    ├── Stopaj hesaplama
+    ├── e-Fatura/e-Arşiv
+    └── e-Defter entegrasyonu
+```
+
+### 9. BI (Business Intelligence)
+```
+BI
+├── Dashboard'lar
+│   ├── Executive dashboard
+│   ├── Departman dashboard'ları
+│   ├── Operasyonel dashboard'lar
+│   └── Kişisel dashboard'lar
+│
+├── Raporlama
+│   ├── Standart raporlar
+│   ├── Ad-hoc raporlar
+│   ├── Çapraz tablolar (pivot)
+│   ├── Drill-down/drill-through
+│   └── Rapor zamanlama
+│
+├── KPI Yönetimi
+│   ├── KPI tanımlama
+│   ├── Hedef belirleme
+│   ├── Gerçekleşme takibi
+│   ├── Trend analizi
+│   └── Scorecard'lar
+│
+├── Analitik
+│   ├── Satış analitiği
+│   ├── Üretim analitiği
+│   ├── Finansal analitik
+│   ├── HR analitiği
+│   └── Müşteri analitiği
+│
+├── Tahminleme (Forecasting)
+│   ├── Satış tahmini
+│   ├── Talep tahmini
+│   ├── Nakit akış tahmini
+│   └── What-if senaryoları
+│
+└── Veri Görselleştirme
+    ├── Grafikler (bar, line, pie)
+    ├── Haritalar
+    ├── Gantt charts
+    ├── Sankey diyagramları
+    └── Heatmap'ler
+```
+
+### 10. PLM (Product Lifecycle Management)
+```
+PLM
+├── Ürün Tanımlama
+│   ├── Ürün kartları
+│   ├── Ürün kategorileri
+│   ├── Ürün özellikleri
+│   ├── Varyantlar
+│   └── Ürün aileleri
+│
+├── Yaşam Döngüsü
+│   ├── Konsept/fikir
+│   ├── Tasarım
+│   ├── Prototip
+│   ├── Üretime alma
+│   ├── Aktif üretim
+│   └── End-of-life (EOL)
+│
+├── Mühendislik Değişiklikleri
+│   ├── ECR (Engineering Change Request)
+│   ├── ECO (Engineering Change Order)
+│   ├── Etki analizi
+│   ├── Onay workflow'u
+│   └── Effectivity yönetimi
+│
+├── CAD Entegrasyonu
+│   ├── 2D/3D dosya yönetimi
+│   ├── Görüntüleme (viewer)
+│   ├── BOM otomatik çıkarma
+│   └── Revizyon senkronizasyon
+│
+├── Where-Used Analizi
+│   ├── Parça kullanım raporu
+│   ├── Etkilenen ürünler
+│   └── Maliyet etkisi
+│
+└── Ürün Konfigürasyonu
+    ├── Konfigürasyon kuralları
+    ├── Opsiyon yönetimi
+    └── Sipariş konfigüratörü
+```
+
+### 11. TMS (Transportation Management System)
+```
+TMS
+├── Sevkiyat Yönetimi
+│   ├── Sevkiyat planlaması
+│   ├── Yük konsolidasyonu
+│   ├── Rota optimizasyonu
+│   └── Sevk irsaliyesi
+│
+├── Taşıyıcı Yönetimi
+│   ├── Taşıyıcı tanımları
+│   ├── Tarife yönetimi
+│   ├── Performans takibi
+│   └── Sözleşme yönetimi
+│
+├── Rota Planlama
+│   ├── Çoklu durak planı
+│   ├── Zaman penceresi
+│   ├── Kapasite kontrolü
+│   └── GPS entegrasyonu
+│
+├── Takip (Tracking)
+│   ├── Gerçek zamanlı takip
+│   ├── ETA hesaplama
+│   ├── Gecikme uyarıları
+│   └── POD (Proof of Delivery)
+│
+├── Maliyet Yönetimi
+│   ├── Navlun hesaplama
+│   ├── Ek masraflar
+│   ├── Maliyet karşılaştırma
+│   └── Fatura kontrolü
+│
+└── Gümrük/Dış Ticaret
+    ├── Gümrük beyannameleri
+    ├── İthalat/ihracat belgeleri
+    ├── Menşe şahadetnamesi
+    └── Incoterms yönetimi
+```
+
+### 12. GRC (Governance, Risk & Compliance)
+```
+GRC
+├── Risk Yönetimi
+│   ├── Risk tanımlama
+│   ├── Risk değerlendirme (etki x olasılık)
+│   ├── Risk haritası
+│   ├── Azaltma planları
+│   └── Risk izleme
+│
+├── Uyumluluk (Compliance)
+│   ├── Yasal gereksinimler
+│   ├── Sektörel standartlar (ISO, vb.)
+│   ├── Uyum kontrol listeleri
+│   ├── Boşluk analizi
+│   └── Düzeltici eylemler
+│
+├── İç Denetim
+│   ├── Denetim planı
+│   ├── Denetim bulguları
+│   ├── Eylem takibi
+│   └── Denetim raporları
+│
+├── Politika Yönetimi
+│   ├── Politika tanımlama
+│   ├── Prosedür yönetimi
+│   ├── Versiyon kontrolü
+│   ├── Dağıtım ve onay
+│   └── Okuma takibi
+│
+├── Olay Yönetimi (Incident)
+│   ├── Olay kaydı
+│   ├── Kök neden analizi
+│   ├── Düzeltici/önleyici faaliyet
+│   └── Trend analizi
+│
+└── Sertifika Yönetimi
+    ├── ISO sertifikaları
+    ├── Ürün sertifikaları
+    ├── Personel sertifikaları
+    └── Yenileme takibi
+```
+
+### 13. FSM (Field Service Management)
+```
+FSM
+├── Saha Kurulum (Installation)
+│   ├── Kurulum projeleri
+│   ├── Saha hazırlık checklist
+│   ├── Ekipman sevkiyat takibi
+│   ├── Kurulum aşamaları
+│   └── Müşteri onayları
+│
+├── Devreye Alma (Commissioning)
+│   ├── Commissioning planı
+│   ├── Test prosedürleri
+│   ├── Parametre ayarları
+│   ├── Performans testleri
+│   ├── Kabul kriterleri
+│   └── FAT/SAT protokolleri
+│
+├── Saha Ziyaretleri (Site Visits)
+│   ├── Ziyaret planlama
+│   ├── Ziyaret raporu
+│   ├── Fotoğraf/video kayıt
+│   ├── Müşteri imzası
+│   └── Takip aksiyonları
+│
+├── Ekip Planlama (Crew Planning)
+│   ├── Teknisyen ataması
+│   ├── Yetkinlik eşleştirme
+│   ├── Takvim yönetimi
+│   ├── Çakışma kontrolü
+│   └── Mobil erişim
+│
+├── Seyahat Yönetimi (Travel)
+│   ├── Seyahat talebi
+│   ├── Uçuş/otel rezervasyon
+│   ├── Vize takibi
+│   ├── Harcama raporu
+│   └── Per diem hesaplama
+│
+└── Saha Raporları
+    ├── Günlük ilerleme
+    ├── Problem/çözüm kaydı
+    ├── Man-hour takibi
+    └── Müşteri memnuniyet
+```
+
+### 14. SERVICE (After-Sales / Teknik Destek)
+```
+SERVICE
+├── Destek Talepleri (Tickets)
+│   ├── Talep kaydı
+│   ├── Önceliklendirme
+│   ├── Atama ve yönlendirme
+│   ├── Durum takibi
+│   └── Çözüm kaydı
+│
+├── Garanti Yönetimi (Warranty)
+│   ├── Garanti tanımları
+│   ├── Garanti kapsamı
+│   ├── Garanti uzatma
+│   ├── Garanti talepleri
+│   └── Garanti maliyeti
+│
+├── Yedek Parça (Spare Parts)
+│   ├── Parça kataloğu
+│   ├── Fiyat listesi
+│   ├── Stok durumu
+│   ├── Sipariş takibi
+│   └── Kritik parça uyarısı
+│
+├── Servis Sözleşmeleri (Contracts)
+│   ├── Bakım anlaşmaları
+│   ├── Destek paketleri
+│   ├── Yıllık bakım planı
+│   ├── Yenileme takibi
+│   └── Gelir takibi
+│
+├── SLA Yönetimi
+│   ├── Yanıt süresi
+│   ├── Çözüm süresi
+│   ├── Uptime garantisi
+│   ├── Ceza/prim hesabı
+│   └── SLA raporları
+│
+└── Uzaktan Destek
+    ├── Uzak bağlantı kaydı
+    ├── Oturum logları
+    ├── Ekran paylaşımı
+    └── PLC/HMI erişimi
+```
+
+### 15. MDM (Master Data Management)
+```
+MDM
+├── Ürün Ana Verileri
+│   ├── Ürün hiyerarşisi
+│   ├── Ürün kodlama standardı
+│   ├── Ürün özellikleri
+│   ├── Birim dönüşümleri
+│   └── Veri kalitesi kontrolü
+│
+├── Müşteri Ana Verileri
+│   ├── Müşteri kodlama
+│   ├── Adres standardizasyonu
+│   ├── İletişim bilgileri
+│   ├── Vergi/ticaret bilgileri
+│   └── Duplikasyon kontrolü
+│
+├── Tedarikçi Ana Verileri
+│   ├── Tedarikçi kodlama
+│   ├── Banka bilgileri
+│   ├── Vergi bilgileri
+│   └── Onay durumu
+│
+├── Kodlama Sistemleri
+│   ├── Hesap planı
+│   ├── Maliyet merkezleri
+│   ├── Proje kodları
+│   ├── Lokasyon kodları
+│   └── Departman kodları
+│
+└── Entegrasyon Yönetimi
+    ├── API yönetimi
+    ├── Veri eşitleme
+    ├── Hata yönetimi
+    ├── Dönüşüm kuralları
+    └── Audit trail
+```
+
+### 16. WORKFLOW ENGINE (BPM)
 ```
 WORKFLOW ENGINE
 ├── Onay Akışları (Approvals)
@@ -393,6 +810,15 @@ WORKFLOW ENGINE
 | Purchasing | CRUD | CRU (limit) | CR | R |
 | Warehouse | CRUD | CRUD | RU | R |
 | Documents | CRUD | CRUD | CR | R |
+| HRM | CRUD | CRUD (dept) | R (self) | - |
+| Finance | CRUD | CRU (limit) | R | - |
+| BI | Full | Dept | Limited | R |
+| PLM | CRUD | CRUD | RU | R |
+| TMS | CRUD | CRUD | RU | R |
+| GRC | CRUD | RU | R | R |
+| FSM | CRUD | CRUD | RU (assigned) | R |
+| Service | CRUD | CRUD | CRU | R |
+| MDM | CRUD | R | R | - |
 | Reports | Full | Dept | Limited | - |
 | Settings | - | - | - | - |
 
@@ -507,12 +933,71 @@ WORKFLOW ENGINE
 - [ ] Workflow engine
 - [ ] Entegrasyonlar
 
-### Faz 8: Reports & Polish (2 hafta)
-- [ ] Dashboard'lar
-- [ ] Raporlar
-- [ ] Test ve optimizasyon
+### Faz 8: HRM (4 hafta)
+- [ ] Personel yönetimi
+- [ ] İzin/puantaj
+- [ ] Bordro temeli
+- [ ] Eğitim/performans
 
-**Toplam: ~30 hafta (7-8 ay)**
+### Faz 9: FMS - Finance (5 hafta)
+- [ ] Genel muhasebe
+- [ ] Alacak/borç yönetimi (AR/AP)
+- [ ] Bütçe yönetimi
+- [ ] Banka mutabakatı
+- [ ] e-Fatura entegrasyonu
+
+### Faz 10: PLM (3 hafta)
+- [ ] Ürün yaşam döngüsü
+- [ ] ECR/ECO workflow
+- [ ] CAD entegrasyonu
+- [ ] Where-used analizi
+
+### Faz 11: TMS - Logistics (3 hafta)
+- [ ] Sevkiyat yönetimi
+- [ ] Taşıyıcı/rota planlama
+- [ ] Takip ve maliyet
+- [ ] Gümrük/dış ticaret
+
+### Faz 12: GRC (2 hafta)
+- [ ] Risk yönetimi
+- [ ] Uyumluluk kontrolleri
+- [ ] Politika/olay yönetimi
+- [ ] Denetim
+
+### Faz 13: BI & Analytics (3 hafta)
+- [ ] Dashboard framework
+- [ ] KPI yönetimi
+- [ ] Raporlama motoru
+- [ ] Tahminleme araçları
+
+### Faz 14: FSM - Field Service (4 hafta)
+- [ ] Saha kurulum yönetimi
+- [ ] Devreye alma (commissioning)
+- [ ] Ekip planlama
+- [ ] Seyahat yönetimi
+- [ ] Mobil uygulama (temel)
+
+### Faz 15: Service - After Sales (3 hafta)
+- [ ] Destek talep sistemi
+- [ ] Garanti yönetimi
+- [ ] Yedek parça
+- [ ] Servis sözleşmeleri
+- [ ] SLA takibi
+
+### Faz 16: MDM & Integration (3 hafta)
+- [ ] Ana veri yönetimi
+- [ ] Kodlama standartları
+- [ ] API gateway
+- [ ] Dış sistem entegrasyonları
+
+### Faz 17: Final Polish (3 hafta)
+- [ ] Modüller arası entegrasyon testi
+- [ ] Performans optimizasyonu
+- [ ] UAT ve bug fix
+- [ ] Dokümantasyon
+- [ ] Eğitim materyalleri
+
+**Toplam: ~55 hafta (13-14 ay)**
 
 ---
 

@@ -1,14 +1,15 @@
 {
     "name": "altesa/panel",
     "type": "project",
-    "description": "Altesa Yönetim Paneli",
+    "description": "Altesa Y\u00f6netim Paneli",
     "keywords": ["laravel", "framework"],
     "license": "proprietary",
     "require": {
         "php": "^8.2",
+        "barryvdh/laravel-dompdf": "^2.0",
+        "filament/filament": "^3.2",
         "laravel/framework": "^11.0",
-        "laravel/tinker": "^2.9",
-        "barryvdh/laravel-dompdf": "^2.0"
+        "laravel/tinker": "^2.9"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
@@ -33,7 +34,8 @@
     "scripts": {
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-            "@php artisan package:discover --ansi"
+            "@php artisan package:discover --ansi",
+            "@php artisan filament:upgrade"
         ],
         "post-update-cmd": [
             "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
