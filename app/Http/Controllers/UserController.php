@@ -10,7 +10,7 @@ class UserController extends Controller
 {
     public function index()
     {
-        $users = User::latest()->paginate(15);
+        $users = User::orderBy('name')->paginate(15);
         return view('users.index', compact('users'));
     }
 
@@ -22,18 +22,18 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:users',
-            'password' => 'required|min:8',
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|min:6',
             'role' => 'required|in:admin,manager,staff',
-            'is_active' => 'boolean',
         ]);
 
         $validated['password'] = Hash::make($validated['password']);
+        $validated['is_active'] = true;
 
         User::create($validated);
 
-        return redirect()->route('users.index')->with('success', 'Kullanıcı başarıyla oluşturuldu.');
+        return redirect()->route('users.index')->with('success', 'Kullanıcı oluşturuldu.');
     }
 
     public function edit(User $user)
@@ -44,31 +44,24 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         $validated = $request->validate([
-            'name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:users,email,' . $user->id,
-            'password' => 'nullable|min:8',
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $user->id,
             'role' => 'required|in:admin,manager,staff',
-            'is_active' => 'boolean',
         ]);
 
-        if ($request->filled('password')) {
-            $validated['password'] = Hash::make($validated['password']);
-        } else {
-            unset($validated['password']);
-        }
+        $validated['is_active'] = $request->has('is_active');
 
         $user->update($validated);
 
-        return redirect()->route('users.index')->with('success', 'Kullanıcı başarıyla güncellendi.');
+        return redirect()->route('users.index')->with('success', 'Kullanıcı güncellendi.');
     }
 
     public function destroy(User $user)
     {
         if ($user->id === auth()->id()) {
-            return redirect()->route('users.index')->with('error', 'Kendi hesabınızı silemezsiniz.');
+            return back()->with('error', 'Kendinizi silemezsiniz.');
         }
-
         $user->delete();
-        return redirect()->route('users.index')->with('success', 'Kullanıcı başarıyla silindi.');
+        return redirect()->route('users.index')->with('success', 'Kullanıcı silindi.');
     }
 }

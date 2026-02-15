@@ -4,22 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Models\Quote;
 use App\Models\Customer;
-use App\Models\Product;
 use Illuminate\Http\Request;
 
 class QuoteController extends Controller
 {
     public function index()
     {
-        $quotes = Quote::with(['customer', 'user'])->latest()->paginate(15);
+        $quotes = Quote::with('customer')->orderBy('created_at', 'desc')->paginate(15);
         return view('quotes.index', compact('quotes'));
     }
 
     public function create()
     {
-        $customers = Customer::active()->get();
-        $products = Product::active()->get();
-        return view('quotes.create', compact('customers', 'products'));
+        $customers = Customer::orderBy('name')->get();
+        return view('quotes.create', compact('customers'));
     }
 
     public function store(Request $request)
@@ -27,44 +25,28 @@ class QuoteController extends Controller
         $validated = $request->validate([
             'customer_id' => 'required|exists:customers,id',
             'valid_until' => 'nullable|date',
-            'notes' => 'nullable',
-            'items' => 'required|array|min:1',
-            'items.*.product_id' => 'nullable|exists:products,id',
-            'items.*.description' => 'required|max:255',
-            'items.*.quantity' => 'required|numeric|min:0.01',
-            'items.*.unit' => 'required|max:20',
-            'items.*.unit_price' => 'required|numeric|min:0',
+            'notes' => 'nullable|string',
         ]);
 
-        $quote = Quote::create([
-            'customer_id' => $validated['customer_id'],
-            'user_id' => auth()->id(),
-            'valid_until' => $validated['valid_until'],
-            'notes' => $validated['notes'],
-            'status' => 'draft',
-        ]);
+        $validated['user_id'] = auth()->id();
+        $validated['quote_no'] = 'TKL-' . date('Y') . '-' . str_pad(Quote::count() + 1, 5, '0', STR_PAD_LEFT);
+        $validated['status'] = 'draft';
 
-        foreach ($validated['items'] as $item) {
-            $quote->items()->create($item);
-        }
+        Quote::create($validated);
 
-        $quote->calculateTotals();
-
-        return redirect()->route('quotes.show', $quote)->with('success', 'Teklif başarıyla oluşturuldu.');
+        return redirect()->route('quotes.index')->with('success', 'Teklif oluşturuldu.');
     }
 
     public function show(Quote $quote)
     {
-        $quote->load(['customer', 'user', 'items.product']);
+        $quote->load('customer', 'items');
         return view('quotes.show', compact('quote'));
     }
 
     public function edit(Quote $quote)
     {
-        $customers = Customer::active()->get();
-        $products = Product::active()->get();
-        $quote->load('items');
-        return view('quotes.edit', compact('quote', 'customers', 'products'));
+        $customers = Customer::orderBy('name')->get();
+        return view('quotes.edit', compact('quote', 'customers'));
     }
 
     public function update(Request $request, Quote $quote)
@@ -73,17 +55,17 @@ class QuoteController extends Controller
             'customer_id' => 'required|exists:customers,id',
             'status' => 'required|in:draft,sent,approved,rejected',
             'valid_until' => 'nullable|date',
-            'notes' => 'nullable',
+            'notes' => 'nullable|string',
         ]);
 
         $quote->update($validated);
 
-        return redirect()->route('quotes.show', $quote)->with('success', 'Teklif başarıyla güncellendi.');
+        return redirect()->route('quotes.index')->with('success', 'Teklif güncellendi.');
     }
 
     public function destroy(Quote $quote)
     {
         $quote->delete();
-        return redirect()->route('quotes.index')->with('success', 'Teklif başarıyla silindi.');
+        return redirect()->route('quotes.index')->with('success', 'Teklif silindi.');
     }
 }

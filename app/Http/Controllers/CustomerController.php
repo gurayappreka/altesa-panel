@@ -9,7 +9,7 @@ class CustomerController extends Controller
 {
     public function index()
     {
-        $customers = Customer::latest()->paginate(15);
+        $customers = Customer::orderBy('created_at', 'desc')->paginate(15);
         return view('customers.index', compact('customers'));
     }
 
@@ -21,25 +21,23 @@ class CustomerController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|max:255',
-            'company' => 'nullable|max:255',
+            'name' => 'required|string|max:255',
+            'company' => 'nullable|string|max:255',
             'email' => 'nullable|email|max:255',
-            'phone' => 'nullable|max:50',
-            'address' => 'nullable',
-            'tax_number' => 'nullable|max:50',
-            'tax_office' => 'nullable|max:100',
-            'notes' => 'nullable',
-            'is_active' => 'boolean',
+            'phone' => 'nullable|string|max:50',
+            'address' => 'nullable|string',
+            'tax_number' => 'nullable|string|max:50',
+            'tax_office' => 'nullable|string|max:100',
+            'notes' => 'nullable|string',
         ]);
 
         Customer::create($validated);
 
-        return redirect()->route('customers.index')->with('success', 'Müşteri başarıyla oluşturuldu.');
+        return redirect()->route('customers.index')->with('success', 'Müşteri başarıyla eklendi.');
     }
 
     public function show(Customer $customer)
     {
-        $customer->load(['quotes', 'projects']);
         return view('customers.show', compact('customer'));
     }
 
@@ -51,25 +49,24 @@ class CustomerController extends Controller
     public function update(Request $request, Customer $customer)
     {
         $validated = $request->validate([
-            'name' => 'required|max:255',
-            'company' => 'nullable|max:255',
+            'name' => 'required|string|max:255',
+            'company' => 'nullable|string|max:255',
             'email' => 'nullable|email|max:255',
-            'phone' => 'nullable|max:50',
-            'address' => 'nullable',
-            'tax_number' => 'nullable|max:50',
-            'tax_office' => 'nullable|max:100',
-            'notes' => 'nullable',
-            'is_active' => 'boolean',
+            'phone' => 'nullable|string|max:50',
+            'address' => 'nullable|string',
+            'tax_number' => 'nullable|string|max:50',
+            'tax_office' => 'nullable|string|max:100',
+            'notes' => 'nullable|string',
         ]);
 
         $customer->update($validated);
 
-        return redirect()->route('customers.index')->with('success', 'Müşteri başarıyla güncellendi.');
+        return redirect()->route('customers.index')->with('success', 'Müşteri güncellendi.');
     }
 
     public function destroy(Customer $customer)
     {
         $customer->delete();
-        return redirect()->route('customers.index')->with('success', 'Müşteri başarıyla silindi.');
+        return redirect()->route('customers.index')->with('success', 'Müşteri silindi.');
     }
 }

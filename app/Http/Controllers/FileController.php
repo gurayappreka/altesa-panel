@@ -5,19 +5,15 @@ namespace App\Http\Controllers;
 use App\Models\File;
 use App\Models\Folder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class FileController extends Controller
 {
-    public function index(Request $request)
+    public function index($folderId = null)
     {
-        $folderId = $request->get('folder');
-        
         $folders = Folder::where('parent_id', $folderId)->get();
         $files = File::where('folder_id', $folderId)->get();
-        
-        $currentFolder = $folderId ? Folder::find($folderId) : null;
-
-        return view('files.index', compact('folders', 'files', 'currentFolder'));
+        return view('files.index', compact('folders', 'files', 'folderId'));
     }
 
     public function upload(Request $request)
@@ -31,7 +27,7 @@ class FileController extends Controller
         $path = $uploadedFile->store('uploads', 'public');
 
         File::create([
-            'name' => $uploadedFile->hashName(),
+            'name' => pathinfo($path, PATHINFO_FILENAME),
             'original_name' => $uploadedFile->getClientOriginalName(),
             'path' => $path,
             'mime_type' => $uploadedFile->getMimeType(),
@@ -40,6 +36,18 @@ class FileController extends Controller
             'uploaded_by' => auth()->id(),
         ]);
 
-        return redirect()->back()->with('success', 'Dosya başarıyla yüklendi.');
+        return back()->with('success', 'Dosya yüklendi.');
+    }
+
+    public function download(File $file)
+    {
+        return Storage::disk('public')->download($file->path, $file->original_name);
+    }
+
+    public function destroy(File $file)
+    {
+        Storage::disk('public')->delete($file->path);
+        $file->delete();
+        return back()->with('success', 'Dosya silindi.');
     }
 }
