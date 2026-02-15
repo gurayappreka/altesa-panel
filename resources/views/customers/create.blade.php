@@ -3,105 +3,91 @@
 @section('title', 'Yeni Müşteri')
 
 @section('content')
-<div class="space-y-6">
-    <div>
-        <h2 class="text-2xl font-bold text-gray-900">Yeni Müşteri</h2>
-        <p class="text-gray-600">Yeni müşteri bilgilerini girin</p>
+<div class="max-w-2xl mx-auto">
+    <div class="mb-6">
+        <a href="{{ route('customers.index') }}" class="text-blue-600 hover:text-blue-800 flex items-center">
+            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+            </svg>
+            Müşterilere Dön
+        </a>
+        <h1 class="text-2xl font-bold text-gray-800 mt-2">Yeni Müşteri Ekle</h1>
     </div>
 
-    <div class="card max-w-2xl">
-        <form action="{{ route('customers.store') }}" method="POST" class="space-y-6">
-            @csrf
+    <form action="{{ route('customers.store') }}" method="POST" class="bg-white rounded-lg shadow p-6">
+        @csrf
+        
+        @if($errors->any())
+        <div class="mb-4 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
+            <ul class="list-disc list-inside">
+                @foreach($errors->all() as $error)
+                <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
+
+        <div class="space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label for="name" class="block text-sm font-medium text-gray-700 mb-2">Ad Soyad <span class="text-red-500">*</span></label>
+                    <input type="text" name="name" id="name" value="{{ old('name') }}" required
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div>
+                    <label for="company" class="block text-sm font-medium text-gray-700 mb-2">Firma Adı</label>
+                    <input type="text" name="company" id="company" value="{{ old('company') }}"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                </div>
+            </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                    <label for="name" class="block text-sm font-medium text-gray-700">İsim *</label>
-                    <input type="text" name="name" id="name" value="{{ old('name') }}" required
-                           class="mt-1 input @error('name') border-red-500 @enderror">
-                    @error('name')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <div>
-                    <label for="company" class="block text-sm font-medium text-gray-700">Şirket</label>
-                    <input type="text" name="company" id="company" value="{{ old('company') }}"
-                           class="mt-1 input @error('company') border-red-500 @enderror">
-                    @error('company')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <div>
-                    <label for="email" class="block text-sm font-medium text-gray-700">E-posta</label>
-                    <input type="email" name="email" id="email" value="{{ old('email') }}"
-                           class="mt-1 input @error('email') border-red-500 @enderror">
-                    @error('email')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <div>
-                    <label for="phone" class="block text-sm font-medium text-gray-700">Telefon</label>
+                    <label for="phone" class="block text-sm font-medium text-gray-700 mb-2">Telefon</label>
                     <input type="text" name="phone" id="phone" value="{{ old('phone') }}"
-                           class="mt-1 input @error('phone') border-red-500 @enderror">
-                    @error('phone')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500">
                 </div>
-
                 <div>
-                    <label for="tax_number" class="block text-sm font-medium text-gray-700">Vergi No</label>
+                    <label for="email" class="block text-sm font-medium text-gray-700 mb-2">E-posta</label>
+                    <input type="email" name="email" id="email" value="{{ old('email') }}"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label for="tax_number" class="block text-sm font-medium text-gray-700 mb-2">Vergi No</label>
                     <input type="text" name="tax_number" id="tax_number" value="{{ old('tax_number') }}"
-                           class="mt-1 input @error('tax_number') border-red-500 @enderror">
-                    @error('tax_number')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500">
                 </div>
-
                 <div>
-                    <label for="tax_office" class="block text-sm font-medium text-gray-700">Vergi Dairesi</label>
+                    <label for="tax_office" class="block text-sm font-medium text-gray-700 mb-2">Vergi Dairesi</label>
                     <input type="text" name="tax_office" id="tax_office" value="{{ old('tax_office') }}"
-                           class="mt-1 input @error('tax_office') border-red-500 @enderror">
-                    @error('tax_office')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500">
                 </div>
             </div>
 
             <div>
-                <label for="address" class="block text-sm font-medium text-gray-700">Adres</label>
+                <label for="address" class="block text-sm font-medium text-gray-700 mb-2">Adres</label>
                 <textarea name="address" id="address" rows="3"
-                          class="mt-1 input @error('address') border-red-500 @enderror">{{ old('address') }}</textarea>
-                @error('address')
-                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                @enderror
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500">{{ old('address') }}</textarea>
             </div>
 
             <div>
-                <label for="notes" class="block text-sm font-medium text-gray-700">Notlar</label>
-                <textarea name="notes" id="notes" rows="3"
-                          class="mt-1 input @error('notes') border-red-500 @enderror">{{ old('notes') }}</textarea>
-                @error('notes')
-                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                @enderror
+                <label for="notes" class="block text-sm font-medium text-gray-700 mb-2">Notlar</label>
+                <textarea name="notes" id="notes" rows="2"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500">{{ old('notes') }}</textarea>
             </div>
+        </div>
 
-            <div class="flex items-center">
-                <input type="checkbox" name="is_active" id="is_active" value="1" checked
-                       class="rounded border-gray-300 text-primary-600 focus:ring-primary-500">
-                <label for="is_active" class="ml-2 text-sm text-gray-700">Aktif</label>
-            </div>
-
-            <div class="flex justify-end space-x-3">
-                <a href="{{ route('customers.index') }}" class="btn btn-secondary">
-                    İptal
-                </a>
-                <button type="submit" class="btn btn-primary">
-                    Kaydet
-                </button>
-            </div>
-        </form>
-    </div>
+        <div class="flex justify-end space-x-3 mt-6 pt-6 border-t">
+            <a href="{{ route('customers.index') }}" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition">
+                İptal
+            </a>
+            <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                Müşteriyi Kaydet
+            </button>
+        </div>
+    </form>
 </div>
 @endsection
