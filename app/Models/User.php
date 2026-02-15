@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements FilamentUser
 {
     use HasFactory, Notifiable;
 
@@ -15,7 +17,6 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
-        'avatar',
         'is_active',
     ];
 
@@ -33,33 +34,11 @@ class User extends Authenticatable
         ];
     }
 
-    // Relationships
-    public function quotes()
+    public function canAccessPanel(Panel $panel): bool
     {
-        return $this->hasMany(Quote::class);
+        return true; // Tüm kullanıcılar erişebilir
     }
 
-    public function purchases()
-    {
-        return $this->hasMany(Purchase::class);
-    }
-
-    public function assignedTasks()
-    {
-        return $this->hasMany(Task::class, 'assigned_to');
-    }
-
-    public function stockMovements()
-    {
-        return $this->hasMany(StockMovement::class);
-    }
-
-    public function uploadedFiles()
-    {
-        return $this->hasMany(File::class, 'uploaded_by');
-    }
-
-    // Helper Methods
     public function isAdmin(): bool
     {
         return $this->role === 'admin';
@@ -68,18 +47,5 @@ class User extends Authenticatable
     public function isManager(): bool
     {
         return in_array($this->role, ['admin', 'manager']);
-    }
-
-    public function hasAccess(string $module, string $permission): bool
-    {
-        if ($this->isAdmin()) {
-            return true;
-        }
-
-        $perm = Permission::where('role', $this->role)
-            ->where('module', $module)
-            ->first();
-
-        return $perm && $perm->{"can_$permission"} ?? false;
     }
 }
